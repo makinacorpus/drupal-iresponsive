@@ -19,6 +19,9 @@ two different modes:
 Future plans is to support more complex image styles (maybe by merging this
 module own styles using a user provided one).
 
+This ships the [Picturefill 2.0](https://scottjehl.github.io/picturefill/)
+polyfill to ensure graceful downgrade for old browsers.
+
 ## Installation
 
 Just download and enable the module.
