@@ -1,0 +1,19 @@
+{
+    "name" : "makinacorpus/drupal-iresponsive",
+    "type" : "drupal-module",
+    "description" : "Image field formatter and theme functions for rendering responsive images using image styles",
+    "homepage" : "http://github.com/makinacorpus/drupal-iresponsive",
+    "license" : "GPL-2",
+    "authors" : [
+        {
+            "name" : "Pierre Rineau",
+            "email" : "pierre.rineau@makina-corpus.com"
+        },
+        {
+            "name" : "Makina Corpus",
+            "homepage" : "http://makina-corpus.com"
+        }
+    ],
+    "minimum-stability" : "dev",
+    "prefer-stable" : true
+}

@@ -1,0 +1,211 @@
+<?php
+/**
+ * @file
+ * Responsive images module.
+ */
+
+/**
+ * Field hooks.
+ */
+require_once __DIR__ . '/iresponsive.field.inc';
+
+/**
+ * Implements hook_theme().
+ */
+function iresponsive_theme() {
+
+  $variables = [
+    // Original image URI (within Drupal) and information.
+    'image_uri'     => null,
+    'image_width'   => null,
+    'image_height'  => null,
+    // Alternative text for the image.
+    'image_alt'     => null,
+    // Modified to use ie. 'w', 'h' or 's'.
+    'modifier'      => 'w',
+      // Default display size for graceful downgrade.
+    'default_size'  => null,
+    // Should the variant list include the full size image.
+    'include_full'  => true,
+    // Percent of viewport the image should occupy in the end.
+    'viewport'      => 100,
+  ];
+
+  return [
+    'iresponsive_img' => [
+      'variables' => $variables,
+      'template' => 'iresponsive-img'
+    ],
+    'iresponsive_picture' => [
+      'variables' => $variables,
+      'template' => 'iresponsive-picture'
+    ],
+  ];
+}
+
+/**
+ * Build variants for rendering responsive images.
+ *
+ * See hook_theme() documentation parameters signification.
+ *
+ * This code originally comes from https://github.com/pounard/jaccob
+ *
+ * @param string $uri
+ * @param int $originalWidth
+ * @param int $originalHeight
+ * @param string $modifier
+ * @param int $defaultSize
+ * @param string $includeFull
+ *
+ * @return string[][]
+ *   An array suitable for the theme hooks of this module.
+ */
+function iresponsive_variant_compute($uri, $originalWidth, $originalHeight, $modifier = 'w', $defaultSize = null, $includeFull = true) {
+
+  $allowedSizes = iresponsive_image_size_list();
+  sort($allowedSizes);
+  if ($defaultSize && !in_array($defaultSize, $allowedSizes)) {
+    $defaultSize = null;
+  }
+  if (!$defaultSize) {
+    // Arbitrary take the smallest one and potentially save some
+    // bandwidth for older or outdated devices.
+    $defaultSize = max($allowedSizes);
+  }
+  if ($includeFull) {
+    $allowedSizes[] = 'full';
+  }
+
+  // Remove variants bigger than the original size.
+  array_filter($allowedSizes, function ($size) use ($originalWidth) {
+    return 'full' === $size || $originalWidth < $size;
+  });
+
+  $ret = ['derivatives' => []];
+
+  foreach ($allowedSizes as $size) {
+
+    if ('full' === $size) {
+      $rel = file_create_url($uri);
+    } else {
+        switch ($modifier) {
+
+          case 's':
+            $width  = $size;
+            $height = $size;
+            break;
+
+          // Default modifier is width, seems logic at this point.
+          default:
+          case 'w':
+            $width  = $size;
+            $height = ceil(($size / $width) * $originalHeight);
+            $modifier = 'w';
+            break;
+        }
+        $rel = image_style_url($modifier . $size, $uri);
+    }
+
+    $derivative = [
+      'href'      => $rel,
+      'width'     => 'full' === $size ? $originalWidth : $width,
+      'height'    => 'full' === $size ? $originalHeight : $height,
+      'size'      => $size,
+      'modifier'  => 'full' === $size ? null : $modifier,
+      'mimetype'  => 'image', // @todo
+    ];
+
+    $ret['derivatives'][] = $derivative;
+
+    if ($defaultSize === $size) {
+      $ret['default'] = $derivative;
+    }
+  }
+
+  return $ret;
+}
+
+/**
+ * Get list of allowed sizes in widht.
+ *
+ * @return int[]
+ *   Heights in pixels.
+ */
+function iresponsive_image_size_list() {
+  return variable_get('iresponsive_image_size_list', [285, 570, 855, 1140, 1440]);
+}
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function iresponsive_image_default_styles() {
+  $ret = [];
+  // This will generate a lot of image styles, but this will allow
+  // better bandwidth and device display optimization.
+  foreach (iresponsive_image_size_list() as $size) {
+    $ret['w' . $size] = [
+      'effects' => [[
+        'name' => 'image_scale',
+        'data' => ['width' => $size, 'upscale' => 0],
+        'weight' => 0,
+      ]],
+    ];
+    $ret['h' . $size] = [
+      'effects' => [[
+        'name' => 'image_scale',
+        'data' => ['height' => $size,'upscale' => 0],
+        'weight' => 0,
+      ]],
+    ];
+    $ret['s' . $size] = [
+      'effects' => [[
+        'name' => 'image_scale_and_crop',
+        'data' => ['width' => $size, 'height' => $size, 'upscale' => 0],
+        'weight' => 0,
+      ]],
+    ];
+  }
+  return $ret;
+}
+
+/**
+ * Implements hook_page_build().
+ */
+function iresponsive_page_build(&$page) {
+  drupal_add_js(drupal_get_path('module', 'iresponsive') . '/js/picturefill.min.js');
+}
+
+/**
+ * Prepare template common code.
+ */
+function iresponsive_template_prepare(&$variables) {
+
+  $ret = iresponsive_variant_compute(
+    $variables['image_uri'],
+    $variables['image_width'],
+    $variables['image_height'],
+    $variables['modifier'],
+    $variables['default_size'],
+    $variables['include_full']
+  );
+
+  if ($ret) {
+    foreach ($ret as $key => $value) {
+      $variables[$key] = $value;
+    }
+  }
+}
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function template_preprocess_iresponsive_img(&$variables) {
+  iresponsive_template_prepare($variables);
+}
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function template_preprocess_iresponsive_picture(&$variables) {
+  iresponsive_template_prepare($variables);
+}
