@@ -83,41 +83,48 @@ function iresponsive_variant_compute($uri, $originalWidth, $originalHeight, $mod
 
   $ret = ['derivatives' => []];
 
-  foreach ($allowedSizes as $size) {
+  foreach ($allowedSizes as $breakpoint) {
 
-    if ('full' === $size) {
+    if ('full' === $breakpoint) {
       $rel = file_create_url($uri);
     } else {
         switch ($modifier) {
 
           case 's':
-            $width  = $size;
-            $height = $size;
+            $width  = $breakpoint;
+            $height = $breakpoint;
+            break;
+
+          case 'w':
+            $width  = $breakpoint;
+            $height = ceil(($breakpoint / $width) * $originalHeight);
             break;
 
           // Default modifier is width, seems logic at this point.
           default:
-          case 'w':
-            $width  = $size;
-            $height = ceil(($size / $width) * $originalHeight);
-            $modifier = 'w';
-            break;
+            foreach (module_implements('iresponive_compute_variant') as $module) {
+              $ret = module_invoke($module, 'iresponive_compute_variant', $modifier, $breakpoint, $originalWidth, $originalHeight);
+              if ($ret) {
+                list($width, $height) = $ret;
+                break;
+              }
+            }
         }
-        $rel = image_style_url($modifier . $size, $uri);
+        $rel = image_style_url($modifier . $breakpoint, $uri);
     }
 
     $derivative = [
       'href'      => $rel,
-      'width'     => 'full' === $size ? $originalWidth : $width,
-      'height'    => 'full' === $size ? $originalHeight : $height,
-      'size'      => $size,
-      'modifier'  => 'full' === $size ? null : $modifier,
+      'width'     => 'full' === $breakpoint ? $originalWidth : $width,
+      'height'    => 'full' === $breakpoint ? $originalHeight : $height,
+      'size'      => $breakpoint,
+      'modifier'  => 'full' === $breakpoint ? null : $modifier,
       'mimetype'  => 'image', // @todo
     ];
 
     $ret['derivatives'][] = $derivative;
 
-    if ($defaultSize === $size) {
+    if ($defaultSize === $breakpoint) {
       $ret['default'] = $derivative;
     }
   }
