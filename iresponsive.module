@@ -29,6 +29,8 @@ function iresponsive_theme() {
     'include_full'  => true,
     // Percent of viewport the image should occupy in the end.
     'viewport'      => 100,
+    // Arbitrary attributes added on the upper tag
+    'attributes'    => [],
   ];
 
   return [
@@ -201,6 +203,19 @@ function iresponsive_template_prepare(&$variables) {
       $variables[$key] = $value;
     }
   }
+
+  // I still don't understand how exactly Drupal 7 works with this...
+  if (!empty($variables['attributes'])) {
+    $variables['attributes_array'] = $variables['attributes'];
+  }
+
+  // Those are set directly into the template for readability, don't let the
+  // user overwrite it, it may break images rendering.
+  unset(
+    $variables['attributes_array']['srcset'],
+    $variables['attributes_array']['src'],
+    $variables['attributes_array']['sizes']
+  );
 }
 
 /**
