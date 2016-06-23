@@ -57,6 +57,7 @@ $build['my_image'] = [
   '#image_width'  => $file->width,
   '#image_height' => $file->height,
   '#image_alt'    => t("Some alternative text"),
+  '#image_title'  => t("Some HTML title tag"),
   // Note that 'w' is the default, and keeps ratio while 's' is for square.
   '#modifier'     => 'w',
   // Default size must exist in iresponsive_image_size_list() function defaults
@@ -79,6 +80,7 @@ theme(''iresponsive_picture', [
   'image_width'  => $file->width,
   'image_height' => $file->height,
   'image_alt'    => t("Some alternative text"),
+  'image_title'  => t("Some HTML title tag"),
   // Note that 'w' is the default, and keeps ratio while 's' is for square.
   'modifier'     => 'w',
   // Default size must exist in iresponsive_image_size_list() function defaults

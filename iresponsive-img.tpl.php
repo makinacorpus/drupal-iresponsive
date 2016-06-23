@@ -4,5 +4,6 @@
   <?php if ($default): ?>
   src="<?php echo $default['href']; ?>"
   <?php if ($image_alt): ?>alt="<?php echo $image_alt; ?>"<?php endif; ?>
+  <?php if ($image_title): ?>title="<?php echo $image_title; ?>"<?php endif; ?>
   <?php endif; ?>
   />

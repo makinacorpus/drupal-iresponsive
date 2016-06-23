@@ -1,4 +1,4 @@
-<picture<?php print $attributes; ?>>
+<picture<?php print $attributes; ?><?php if ($image_title): ?> title="<?php echo $image_title; ?>"<?php endif; ?>>
   <?php /* https://scottjehl.github.io/picturefill/#ie9 */ ?>
   <!--[if IE 9]><video style="display: none;"><![endif]-->
   <?php foreach ($derivatives as $derivative): ?>

@@ -123,6 +123,7 @@ function iresponsive_field_formatter_view($entity_type, $entity, $field, $instan
           '#image_width'  => $item['width'],
           '#image_height' => $item['height'],
           '#image_alt'    => $item['alt'],
+          '#image_title'  => $item['title'],
           '#modifier'     => $settings['modifier'],
           '#default_size' => $settings['default_size'],
           '#include_full' => $settings['include_full'],

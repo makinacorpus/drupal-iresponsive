@@ -21,6 +21,8 @@ function iresponsive_theme() {
     'image_height'  => null,
     // Alternative text for the image.
     'image_alt'     => null,
+    // Title attribute for the image.
+    'image_title'   => null,
     // Modified to use ie. 'w', 'h' or 's'.
     'modifier'      => 'w',
       // Default display size for graceful downgrade.
