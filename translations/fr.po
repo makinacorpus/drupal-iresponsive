@@ -1,0 +1,71 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-10-19 15:57+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.6\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:13
+msgid "Responsive image"
+msgstr "Image responsive"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:39
+msgid "HTML tag"
+msgstr "Balise HTML"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:42
+msgid "&lt;img&gt; suitable for most cases"
+msgstr "&lt;img&gt; approprié pour la majorité des cas"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:43
+msgid "&lt;picture&gt; you should use this for fullscreen display"
+msgstr ""
+"&lt;picture&gt; vous pouvez utiliser ceci pour des affichages plein écran"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:45
+msgid ""
+"HTML &lt;picture&gt; element does not handle the viewport relative size "
+"attribute, it's not suitable for thumbnail display"
+msgstr ""
+"L'élément HTML &lt;picture&gt; ne supporte pas l'attribut de taille relative "
+"au viewport, il n'est pas approprié pour l'affichage de thubmnail"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:50
+msgid "Display mode"
+msgstr "Mode d’affichage"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:53
+msgid "Keep image original ratio"
+msgstr "Garder le ratio original de l'image"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:54
+msgid "Square image"
+msgstr "Image carré"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:60
+msgid "Graceful downgrade size"
+msgstr "Taille alternative pour les anciens navigateur Web"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:63
+msgid "Smallest one (default)"
+msgstr "La plus petites (par défaut)"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:68
+msgid "Include original image in variants"
+msgstr "Inclure l'image d'origine dans les variantes"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:73
+msgid "Viewport relative size (in percent)"
+msgstr "Taille relative au viewport (pourcentage)"
+
+#: sites/all/modules/composer/drupal-iresponsive/iresponsive.field.inc:100
+msgid "with original"
+msgstr "avec l'original"
